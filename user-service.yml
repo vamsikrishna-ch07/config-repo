@@ -5,19 +5,16 @@ spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:mysql://localhost:3306/e-commerce
+    url: jdbc:mysql://localhost:3306/ecommerce
     username: root
-    password: Kr12@984872
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    jpa:
-      hibernate:
-        ddl-auto: update
-      show-sql: true
-      database-platform: org.hibernate.dialect.MySQL8Dialect
+    password: your_password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://localhost:8761/eureka/
 
-jwt:
-  secret: your-very-secret-key
