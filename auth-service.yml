@@ -18,5 +18,5 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
 jwt:
-  secret: secret_key_for_jwt
+  secret: mysecretkey123456
   expirationMs: 86400000 # 1 day
