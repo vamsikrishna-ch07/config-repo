@@ -5,7 +5,7 @@ spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:mysql://localhost:3306/user_service(ecommerce)
+    url: jdbc:mysql://localhost:3306/user_service
     username: root
     password: Kr12@984872
   jpa:
