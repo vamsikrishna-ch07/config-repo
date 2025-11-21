@@ -1,5 +1,5 @@
     server:
-      port: 8082 # Or any other available port for your product service
+      port: 8083 # Or any other available port for your product service
 
     eureka:
       client:
