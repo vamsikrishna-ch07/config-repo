@@ -4,17 +4,25 @@ server:
 spring:
   application:
     name: gateway-service
+  config:
+    import: optional:configserver:http://localhost:8888 # Keep this if you're using a Config Server
   cloud:
     gateway:
       discovery:
         locator:
-          enabled: true
+          enabled: true # Enable discovery locator to automatically create routes for registered services
+          lower-case-service-id: true # Optional: useful if your service IDs are lowercase
       routes:
-        - id: user-service
-          uri: lb://user-service
+        - id: user-service # Route for the user-service
+          uri: lb://user-service # 'lb' for load balancing, followed by the Eureka service ID
           predicates:
-            - Path=/api/users/**
+            - Path=/api/v1/users/** # Path that will trigger this route
+        - id: spring-security # Route for the spring-security module
+          uri: lb://spring-security # 'lb' for load balancing, followed by the Eureka service ID
+          predicates:
+            - Path=/api/v1/auth/** # Path that will trigger this route (based on AuthController's @RequestMapping)
+
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://localhost:8761/eureka # Address of your Eureka server
