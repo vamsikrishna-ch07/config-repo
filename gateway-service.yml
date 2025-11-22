@@ -40,7 +40,13 @@ spring:
           uri: lb://inventory-service
           predicates:
             - Path=/api/v1/inventory/**
-
+            
+        # Route for the Cart Service (CORRECTED: Was malformed in the original input)
+        - id: cart-service
+          uri: lb://cart-service
+          predicates:
+            - Path=/api/v1/cart/** # The predicate must be listed under the route's `predicates` property
+            
 eureka:
   client:
     service-url:
