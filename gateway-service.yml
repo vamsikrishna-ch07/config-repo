@@ -13,10 +13,14 @@ spring:
           enabled: true # Enable discovery locator to automatically create routes for registered services
           lower-case-service-id: true # Optional: useful if your service IDs are lowercase
       routes:
-        - id: user-service # Route for the user-service
-          uri: lb://user-service # 'lb' for load balancing, followed by the Eureka service ID
+        - id: product-service
+          uri: lb://product-service
           predicates:
-            - Path=/api/v1/users/** # Path that will trigger this route
+            - Path=/api/v1/products/**
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/users/** 
         - id: spring-security # Route for the spring-security module
           uri: lb://spring-security # 'lb' for load balancing, followed by the Eureka service ID
           predicates:
