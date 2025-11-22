@@ -4,51 +4,56 @@ server:
 spring:
   application:
     name: gateway-service
+
   config:
-    # IMPORTANT: Keep this line ONLY if you are running a Spring Cloud Config Server at :8888
-    # If not using a Config Server, this line should be commented out or removed
+    # Remove/comment this if you're NOT using Spring Cloud Config Server
     import: optional:configserver:http://localhost:8888
+
   cloud:
     gateway:
       discovery:
         locator:
-          # Enable discovery locator to automatically create routes for registered services
           enabled: true
-          # Optional: useful if your service IDs are lowercase
           lower-case-service-id: true
+
       routes:
-        # Route for the Product Service
+        # Product Service
         - id: product-service
           uri: lb://product-service
           predicates:
             - Path=/api/v1/products/**
 
-        # Route for the User Service
+        # Order Service
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/v1/orders/**
+
+        # User Service
         - id: user-service
           uri: lb://user-service
           predicates:
             - Path=/api/v1/users/**
 
-        # Route for the Spring Security (Auth) Service
+        # Auth / Spring Security Service
         - id: spring-security
           uri: lb://spring-security
           predicates:
             - Path=/api/v1/auth/**
 
-        # Route for the Inventory Service
+        # Inventory Service
         - id: inventory-service
           uri: lb://inventory-service
           predicates:
             - Path=/api/v1/inventory/**
-            
-        # Route for the Cart Service (CORRECTED: Was malformed in the original input)
+
+        # Cart Service
         - id: cart-service
           uri: lb://cart-service
           predicates:
-            - Path=/api/v1/cart/** # The predicate must be listed under the route's `predicates` property
-            
+            - Path=/api/v1/cart/**
+
 eureka:
   client:
     service-url:
-      # Address of your Eureka server
       defaultZone: http://localhost:8761/eureka
