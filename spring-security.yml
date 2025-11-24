@@ -11,8 +11,9 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
 
-jwt:
-  secret: "your-single-strong-secret-key-that-is-at-least-256-bits-long" # REPLACE THIS WITH A REAL, STRONG, UNIQUE KEY
+
+ jwt:
+   secret: 41Dk432F44F4528482B4D6251655468576D5A7134743777217A25432A462D4A6
   expirationMs: 86400000 # 1 day in milliseconds (86400000 = 24 * 60 * 60 * 1000)
   
   
