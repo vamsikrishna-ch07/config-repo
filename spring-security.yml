@@ -1,12 +1,12 @@
 service_dbserver:
-  port: 8087
+  port: 8088
 
 spring:
   application:
     name: spring-security
 
   datasource:
-    url: jdbc:mysql://localhost:3306/user_service_db1
+    url: jdbc:mysql://localhost:3306/user_db
     username: root
     password: Kr12@984872
     driver-class-name: com.mysql.cj.jdbc.Driver
