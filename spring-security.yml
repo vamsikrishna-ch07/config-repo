@@ -1,22 +1,19 @@
-service_dbserver:
+
+server:
   port: 8088
 
 spring:
   application:
     name: spring-security
 
-  datasource:
-    url: jdbc:mysql://localhost:3306/user_db
-    username: root
-    password: Kr12@984872
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
 
 jwt:
-  secret: mysecretkey123456
-  expirationMs: 86400000 # 1 day
+  secret: "your-single-strong-secret-key-that-is-at-least-256-bits-long" # REPLACE THIS WITH A REAL, STRONG, UNIQUE KEY
+  expirationMs: 86400000 # 1 day in milliseconds (86400000 = 24 * 60 * 60 * 1000)
+  
+  
+  
