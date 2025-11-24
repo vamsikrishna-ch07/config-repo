@@ -5,10 +5,6 @@ spring:
   application:
     name: gateway-service
 
-  config:
-    # Remove/comment this if you're NOT using Spring Cloud Config Server
-    import: optional:configserver:http://localhost:8888
-
   cloud:
     gateway:
       discovery:
