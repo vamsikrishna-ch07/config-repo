@@ -1,22 +1,23 @@
-server:
-  port: 8094 # Or any other available port
+    server:
+      port: 8094
 
-spring:
-  application:
-    name: notification-service
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: vamsikrishnach2000@gmail.com
-    password: ctpgvsraszspmzto # Replace with your Gmail App Password (NOT your regular password)
-    properties:
+    spring:
+      application:
+        name: notification-service
       mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+        host: smtp.gmail.com
+        port: 587
+        username: vamsikrishnach2000@gmail.com
+        password: 'ctpgvsraszspmzto'  # <-- CORRECTED: No spaces and quoted
+        properties:
+          mail:
+            smtp:
+              auth: true
+              starttls:
+                enable: true
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+    eureka:
+      client:
+        serviceUrl:
+          defaultZone: http://localhost:8761/eureka
+    
