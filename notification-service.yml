@@ -8,7 +8,7 @@
         host: smtp.gmail.com
         port: 587
         username: vamsikrishnach2000@gmail.com
-        password: 'ctpgvsraszspmzto'  # <-- CORRECTED: No spaces and quoted
+        password: 'ictmstdieoiflnf'  # <-- CORRECTED: No spaces and quoted
         properties:
           mail:
             smtp:
