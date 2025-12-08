@@ -1,12 +1,14 @@
+# cart-service specific configuration
 server:
-  port: 8083
+  port: 8085 # IMPORTANT: This must match the SERVER_PORT in docker-compose.yml for cart-service
 
 spring:
   application:
-    name: cart-service
+    name: cart-service # Service name for Eureka registration and config server
 
   datasource:
-    url: jdbc:mysql://localhost:3306/cart_db?createDatabaseIfNotExist=true
+    # IMPORTANT: Use the Docker Compose service name for MySQL, not localhost
+    url: jdbc:mysql://mysql-db:3306/cart_db?createDatabaseIfNotExist=true
     username: root
     password: Kr12@984872
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,27 +17,7 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+    open-in-view: false # Good practice to set to false
 
-  cloud:
-    loadbalancer:
-      retry:
-        enabled: true
-
-  feign:
-    client:
-      config:
-        default:
-          connectTimeout: 5000
-          readTimeout: 5000
-          loggerLevel: basic
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
+# All other common properties (management, feign, eureka.client, retry)
+# will be inherited from application.yml in the config repo.
