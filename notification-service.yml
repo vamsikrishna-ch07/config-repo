@@ -9,34 +9,10 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: vamsikrishnach2000@gmail.com
-    password: "bindagiximyqytak"   # App password for Gmail
+    password: "bindagiximyqytak"
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
-
-  cloud:
-    loadbalancer:
-      retry:
-        enabled: true
-
-  feign:
-    client:
-      config:
-        default:
-          connectTimeout: 5000
-          readTimeout: 5000
-          loggerLevel: basic
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
