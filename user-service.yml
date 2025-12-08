@@ -16,29 +16,5 @@ spring:
       ddl-auto: update
     show-sql: true
 
-  cloud:
-    loadbalancer:
-      retry:
-        enabled: true
-
-  feign:
-    client:
-      config:
-        default:
-          connectTimeout: 5000
-          readTimeout: 5000
-          loggerLevel: basic
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-
 jwt:
   secret: mysecretkey1234567890
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
