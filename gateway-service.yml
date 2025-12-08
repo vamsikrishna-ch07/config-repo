@@ -51,26 +51,3 @@ spring:
           predicates:
             - Path=/api/v1/payments/**
 
-    loadbalancer:
-      retry:
-        enabled: true
-
-  # Feign config under spring
-  feign:
-    client:
-      config:
-        default:
-          connectTimeout: 5000
-          readTimeout: 5000
-          loggerLevel: basic
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
