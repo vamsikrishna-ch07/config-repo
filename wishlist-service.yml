@@ -19,31 +19,5 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka
-
-# JWT (if needed for Feign calls)
 jwt:
   secret: mysecretkey1234567890
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
-
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic
-
-spring:
-  cloud:
-    loadbalancer:
-      retry:
-        enabled: true
