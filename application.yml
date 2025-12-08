@@ -1,0 +1,39 @@
+# ===================================================================
+# COMMON PROPERTIES FOR ALL MICROSERVICES
+# ===================================================================
+
+# Management Endpoints for Health Checks and Monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info # Expose health and info endpoints for Docker health checks
+  endpoint:
+    health:
+      show-details: always # Good for debugging, can be 'never' in production
+
+# Feign Client Configuration (applies to all services using Feign)
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000 # Connection timeout in milliseconds
+        readTimeout: 5000    # Read timeout in milliseconds
+        loggerLevel: basic   # Log level for Feign client (can be 'full' for debugging)
+
+# Spring Cloud Load Balancer and Retry Configuration
+spring:
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true # Enable retry mechanism for load-balanced Feign calls
+
+# Eureka Client Configuration (common for all clients)
+eureka:
+  client:
+    service-url:
+      # IMPORTANT: Use the Docker Compose service name for the Eureka server
+      defaultZone: http://service-registry:8761/eureka
+  instance:
+    # Prefer the IP address for registration in a Docker environment
+    prefer-ip-address: true
