@@ -5,30 +5,6 @@ spring:
   application:
     name: spring-security
 
-  cloud:
-    loadbalancer:
-      retry:
-        enabled: true
-
-  feign:
-    client:
-      config:
-        default:
-          connectTimeout: 5000
-          readTimeout: 5000
-          loggerLevel: basic
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-
 jwt:
   secret: 41Dk432F44F4528482B4D6251655468576D5A7134743777217A25432A462D4A6
   expirationMs: 86400000
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
