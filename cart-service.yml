@@ -18,6 +18,3 @@ spring:
       ddl-auto: update
     show-sql: true
     open-in-view: false # Good practice to set to false
-
-# All other common properties (management, feign, eureka.client, retry)
-# will be inherited from application.yml in the config repo.
