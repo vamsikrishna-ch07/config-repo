@@ -1,12 +1,12 @@
 server:
-  port: 8095
+  port: 8087
 
 spring:
   application:
     name: wishlist-service
 
   datasource:
-    url: jdbc:mysql://localhost:3306/wishlist_db?createDatabaseIfNotExist=true
+    url: jdbc:mysql://mysql-db:3306/wishlist_db?createDatabaseIfNotExist=true
     username: root
     password: Kr12@984872
     driver-class-name: com.mysql.cj.jdbc.Driver
