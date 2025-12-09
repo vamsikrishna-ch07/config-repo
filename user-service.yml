@@ -15,6 +15,5 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-
-jwt:
-  secret: mysecretkey1234567890
+# jwt:
+#   secret: mysecretkey1234567890
