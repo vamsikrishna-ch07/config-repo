@@ -1,19 +1,26 @@
+# ===================================================================
+# USER-SERVICE SPECIFIC CONFIGURATION
+# ===================================================================
 server:
-  port: 8086
+  port: 8086 # CORRECT port for user-service, matching docker-compose.yml
 
 spring:
   application:
     name: user-service
 
   datasource:
-    url: jdbc:mysql://localhost:3306/user_db?createDatabaseIfNotExist=true
+    # CORRECT: Use the Docker service name 'mysql-db', not 'localhost'
+    url: jdbc:mysql://mysql-db:3306/user_db?createDatabaseIfNotExist=true
     username: root
     password: Kr12@984872
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    # driver-class-name is not needed; Spring Boot detects it automatically
 
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        # It's good practice to specify the dialect
+        dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
-# jwt:
-#   secret: mysecretkey1234567890
+    open-in-view: false # Best practice for performance
