@@ -3,11 +3,12 @@
 # ===================================================================
 
 # Management Endpoints for Health Checks and Monitoring
+# AFTER
 management:
   endpoints:
     web:
       exposure:
-        include: health,info # Expose health and info endpoints for Docker health checks
+        include: "*" # Expose all endpoints # Expose health and info endpoints for Docker health checks
   endpoint:
     health:
       show-details: always # Good for debugging, can be 'never' in production
