@@ -1,10 +1,15 @@
-server:
-  port: 8089
+    server:
+      port: 8089
 
-spring:
-  application:
-    name: spring-security
+    spring:
+      application:
+        name: spring-security
 
-jwt:
-  secret: 41Dk432F44F4528482B4D6251655468576D5A7134743777217A25432A462D4A6
-  expirationMs: 86400000
+    jwt:
+      # IMPORTANT: Replace this with a strong, BASE64-encoded secret key.
+      # You can generate one using: echo "your-secret-key-here" | base64
+      # Or, even better, use an environment variable in docker-compose.yml for production.
+      secret: YmFzZTY0ZW5jb2RlZHNlY3JldGtleWZvcmVjb21tZXJjZWFwcGxpY2F0aW9uMjAyNA==
+      expiration: 3600000 # 1 hour in milliseconds
+      refresh.expiration: 604800000 # 7 days in milliseconds
+    
