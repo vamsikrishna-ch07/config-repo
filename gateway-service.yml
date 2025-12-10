@@ -12,16 +12,26 @@
               lower-case-service-id: true
           routes:
             # Spring Security Service - PUBLIC: No AuthenticationFilter
-            - id: spring-security
+            - id: spring-security-login
               uri: lb://spring-security
               predicates:
-                - Path=/api/v1/auth/**
+                - Path=/api/v1/auth/login
+            - id: spring-security-refresh
+              uri: lb://spring-security
+              predicates:
+                - Path=/api/v1/auth/refresh-token
+
+            # User Service - PUBLIC: No AuthenticationFilter
+            - id: user-service-register
+              uri: lb://user-service
+              predicates:
+                - Path=/api/v1/auth/register
 
             # User Service - PROTECTED: Applies AuthenticationFilter
             - id: user-service
               uri: lb://user-service
               predicates:
-                - Path=/api/v1/auth/**
+                - Path=/api/v1/users/**
               filters:
                 - AuthenticationFilter
 
