@@ -18,3 +18,5 @@ spring:
       ddl-auto: update
     show-sql: true
     open-in-view: false # Good practice to set to false
+jwt:
+  secret: YmFzZTY0ZW5jb2RlZHNlY3JldGtleWZvcmVjb21tZXJjZWFwcGxpY2F0aW9uMjAyNA==
