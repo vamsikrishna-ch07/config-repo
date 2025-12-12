@@ -1,3 +1,4 @@
+# In config-repo/wishlist-service.yml
 server:
   port: 8087
 
@@ -15,7 +16,37 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+    # Removed: properties.hibernate.dialect (not needed explicitly, and causes warning)
 
+  # --- Security Configuration for this Resource Server and Client ---
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+    security:
+      oauth2:
+        resourceserver:
+          jwt:
+            issuer-uri: http://spring-security:8089
+        client:
+          registration:
+          # Client config for service-to-service communication
+            service-client:
+              provider: spring
+              client-id: service-client
+              client-secret: service-secret
+              authorization-grant-type: client_credentials
+              scope: internal.read,internal.write
+          provider:
+            spring:
+              # Token endpoint for client_credentials flow
+              token-uri: http://spring-security:8089/oauth2/token
+
+# Feign Client Configuration for this service
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
