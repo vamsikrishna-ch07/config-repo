@@ -1,22 +1,20 @@
-# cart-service specific configuration
-server:
-  port: 8085 # IMPORTANT: This must match the SERVER_PORT in docker-compose.yml for cart-service
+    # Corrected cart-service.yml
+    server:
+      port: 8085
 
-spring:
-  application:
-    name: cart-service # Service name for Eureka registration and config server
+    spring:
+      application:
+        name: cart-service
 
-  datasource:
-    # IMPORTANT: Use the Docker Compose service name for MySQL, not localhost
-    url: jdbc:mysql://mysql-db:3306/cart_db?createDatabaseIfNotExist=true
-    username: root
-    password: Kr12@984872
-    driver-class-name: com.mysql.cj.jdbc.Driver
+      datasource:
+        url: jdbc:mysql://mysql-db:3306/cart_db?createDatabaseIfNotExist=true
+        username: root
+        password: Kr12@984872
+        driver-class-name: com.mysql.cj.jdbc.Driver
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    open-in-view: false # Good practice to set to false
-jwt:
-  secret: YmFzZTY0ZW5jb2RlZHNlY3JldGtleWZvcmVjb21tZXJjZWFwcGxpY2F0aW9uMjAyNA==
+      jpa:
+        hibernate:
+          ddl-auto: update
+        show-sql: true
+        open-in-view: false
+    
