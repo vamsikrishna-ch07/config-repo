@@ -21,34 +21,34 @@ feign:
         readTimeout: 5000     # Read timeout in milliseconds
         loggerLevel: basic    # Log level for Feign client ('full' for debugging)
 
-# Spring Cloud Load Balancer and Retry Configuration
-spring:
+# Spring and Eureka Configurations
+spring: # <--- ALL SPRING-RELATED PROPERTIES MUST BE UNDER THIS SINGLE BLOCK
   cloud:
     loadbalancer:
       retry:
         enabled: true  # Enable retry mechanism for load-balanced Feign calls
+    
+    # Security Configuration for all RESOURCE SERVERS
+    security:
+      oauth2:
+        resourceserver:
+          jwt:
+            # Connects to Auth-Service to get the public key for validating JWTs
+            issuer-uri: http://spring-security:8089
 
-  # Security Configuration for all RESOURCE SERVERS
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          # Connects to Auth-Service to get the public key for validating JWTs
-          issuer-uri: http://spring-security:8089
-
-      client:
-        registration:
-          # Client config for service-to-service communication
-          service-client:
-            provider: spring
-            client-id: service-client
-            client-secret: service-secret
-            authorization-grant-type: client_credentials
-            scope: internal.read,internal.write
-        provider:
-          spring:
-            # Token endpoint for client_credentials flow
-            token-uri: http://spring-security:8089/oauth2/token
+        client:
+          registration:
+            # Client config for service-to-service communication
+            service-client:
+              provider: spring
+              client-id: service-client
+              client-secret: service-secret
+              authorization-grant-type: client_credentials
+              scope: internal.read,internal.write
+          provider:
+            spring:
+              # Token endpoint for client_credentials flow
+              token-uri: http://spring-security:8089/oauth2/token
 
 # Eureka Client Configuration (common for all clients)
 eureka:
