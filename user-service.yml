@@ -1,26 +1,48 @@
-# ===================================================================
-# USER-SERVICE SPECIFIC CONFIGURATION
-# ===================================================================
 server:
-  port: 8086 # CORRECT port for user-service, matching docker-compose.yml
+  port: 8086
 
 spring:
   application:
     name: user-service
 
   datasource:
-    # CORRECT: Use the Docker service name 'mysql-db', not 'localhost'
     url: jdbc:mysql://mysql-db:3306/user_db?createDatabaseIfNotExist=true
     username: root
     password: Kr12@984872
-    # driver-class-name is not needed; Spring Boot detects it automatically
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        # It's good practice to specify the dialect
-        dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
-    open-in-view: false # Best practice for performance
+
+  # --- Security Configuration for this Resource Server and Client ---
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+    security:
+      oauth2:
+        resourceserver:
+          jwt:
+            issuer-uri: http://spring-security:8089
+        client:
+          registration:
+            service-client:
+              provider: spring
+              client-id: service-client
+              client-secret: service-secret
+              authorization-grant-type: client_credentials
+              scope: internal.read,internal.write
+          provider:
+            spring:
+              token-uri: http://spring-security:8089/oauth2/token
+
+# Feign Client Configuration for this service (if it uses Feign)
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
