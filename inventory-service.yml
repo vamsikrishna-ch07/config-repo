@@ -1,23 +1,49 @@
-    # Example corrected inventory-service.yml
-    server:
-      port: 8083
+server:
+  port: 8083
 
-    spring:
-      application:
-        name: inventory-service
+spring:
+  application:
+    name: inventory-service
 
-      datasource:
-        url: jdbc:mysql://mysql-db:3306/inventory_db?createDatabaseIfNotExist=true
-        username: root
-        password: Kr12@984872
-        driver-class-name: com.mysql.cj.jdbc.Driver
+  datasource:
+    url: jdbc:mysql://mysql-db:3306/inventory_db?createDatabaseIfNotExist=true
+    username: root
+    password: Kr12@984872
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
-      jpa:
-        hibernate:
-          ddl-auto: update
-        show-sql: true
-        # REMOVE THIS SECTION:
-        # properties:
-        #   hibernate:
-        #     dialect: org.hibernate.dialect.MySQL8Dialect
-    
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    # Removed: properties.hibernate.dialect (not needed explicitly)
+
+  # --- Security Configuration for this Resource Server and Client ---
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+    security:
+      oauth2:
+        resourceserver:
+          jwt:
+            issuer-uri: http://spring-security:8089
+        client:
+          registration:
+            service-client:
+              provider: spring
+              client-id: service-client
+              client-secret: service-secret
+              authorization-grant-type: client_credentials
+              scope: internal.read,internal.write
+          provider:
+            spring:
+              token-uri: http://spring-security:8089/oauth2/token
+
+# Feign Client Configuration for this service (if it uses Feign)
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
