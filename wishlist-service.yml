@@ -19,5 +19,3 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
-jwt:
-  secret: mysecretkey1234567890
