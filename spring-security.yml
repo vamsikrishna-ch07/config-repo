@@ -13,6 +13,3 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-
-# The old 'jwt:' block with the secret key is REMOVED because the new
-# SecurityConfig generates and manages a public/private key pair automatically.
