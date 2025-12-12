@@ -1,20 +1,51 @@
-    # Corrected cart-service.yml
-    server:
-      port: 8085
+# cart-service specific configuration
+server:
+  port: 8085 # IMPORTANT: This must match the SERVER_PORT in docker-compose.yml for cart-service
 
-    spring:
-      application:
-        name: cart-service
+spring:
+  application:
+    name: cart-service # Service name for Eureka registration and config server
 
-      datasource:
-        url: jdbc:mysql://mysql-db:3306/cart_db?createDatabaseIfNotExist=true
-        username: root
-        password: Kr12@984872
-        driver-class-name: com.mysql.cj.jdbc.Driver
+  datasource:
+    # IMPORTANT: Use the Docker Compose service name for MySQL, not localhost
+    url: jdbc:mysql://mysql-db:3306/cart_db?createDatabaseIfNotExist=true
+    username: root
+    password: Kr12@984872
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
-      jpa:
-        hibernate:
-          ddl-auto: update
-        show-sql: true
-        open-in-view: false
-    
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false # Good practice to set to false
+
+  # --- Security Configuration for this Resource Server and Client ---
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+    security:
+      oauth2:
+        resourceserver:
+          jwt:
+            issuer-uri: http://spring-security:8089
+        client:
+          registration:
+            service-client:
+              provider: spring
+              client-id: service-client
+              client-secret: service-secret
+              authorization-grant-type: client_credentials
+              scope: internal.read,internal.write
+          provider:
+            spring:
+              token-uri: http://spring-security:8089/oauth2/token
+
+# Feign Client Configuration for this service
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
