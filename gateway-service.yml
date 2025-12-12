@@ -83,7 +83,5 @@
               filters:
                 - AuthenticationFilter
 
-    # JWT Secret for the Gateway's AuthenticationFilter
-    jwt:
-      secret: YmFzZTY0ZW5jb2RlZHNlY3JldGtleWZvcmVjb21tZXJjZWFwcGxpY2F0aW9uMjAyNA== # Use the same secret as spring-security.yml
+    
     
