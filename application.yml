@@ -1,59 +1,26 @@
-    # ===================================================================
-    # COMMON PROPERTIES FOR ALL MICROSERVICES
-    # ===================================================================
+# ===================================================================
+# COMMON PROPERTIES FOR ALL MICROSERVICES (TRULY UNIVERSAL)
+# ===================================================================
 
-    # Management Endpoints for Health Checks and Monitoring
-    management:
-      endpoints:
-        web:
-          exposure:
-            include: "*"        # Expose all endpoints for Docker health checks
-      endpoint:
-        health:
-          show-details: always  # Good for debugging; can be 'never' in production
+# Management Endpoints for Health Checks and Monitoring (most services need this)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
 
-    # Feign Client Configuration (applies to all services using Feign)
-    feign:
-      client:
-        config:
-          default:
-            connectTimeout: 5000  # Connection timeout in milliseconds
-            readTimeout: 5000     # Read timeout in milliseconds
-            loggerLevel: basic    # Log level for Feign client ('full' for debugging)
+# Spring Configurations (only truly universal ones)
+spring:
+  application:
+    name: application # Default application name, can be overridden by service-specific configs
 
-    # Spring Configurations
-    spring: # <--- ALL SPRING-RELATED PROPERTIES MUST BE UNDER THIS SINGLE BLOCK
-      application:
-        name: application # Default application name, can be overridden by service-specific configs
-      cloud:
-        loadbalancer:
-          retry:
-            enabled: true  # Enable retry mechanism for load-balanced Feign calls
-        security:
-          oauth2:
-            resourceserver:
-              jwt:
-                # Connects to Auth-Service to get the public key for validating JWTs.
-                issuer-uri: http://spring-security:8089
-            client:
-              registration:
-                # Client config for service-to-service communication
-                service-client:
-                  provider: spring
-                  client-id: service-client
-                  client-secret: service-secret
-                  authorization-grant-type: client_credentials
-                  scope: internal.read,internal.write
-              provider:
-                spring:
-                  # Token endpoint for client_credentials flow
-                  token-uri: http://spring-security:8089/oauth2/token
-
-    # Eureka Client Configuration (common for all clients)
-    eureka:
-      client:
-        service-url:
-          defaultZone: http://service-registry:8761/eureka
-      instance:
-        prefer-ip-address: true
-    
+# Eureka Client Configuration (most services need to be clients)
+eureka:
+  client:
+    service-url:
+      defaultZone: http://service-registry:8761/eureka
+  instance:
+    prefer-ip-address: true
