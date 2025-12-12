@@ -1,5 +1,4 @@
-
-    # In config-repo/gateway-service.yml
+# In config-repo/gateway-service.yml
 server:
   port: 8080
 
@@ -21,13 +20,11 @@ spring:
           uri: lb://spring-security
           predicates:
             - Path=/oauth2/token # Standard OAuth2 token endpoint
-          # No filters needed here, security is handled by Gateway's SecurityConfig
 
         - id: auth-service-jwks
           uri: lb://spring-security
           predicates:
             - Path=/.well-known/jwks.json # Standard JWKS endpoint for public keys
-          # No filters needed here, security is handled by Gateway's SecurityConfig
 
         # --- Explicit Route for User Registration ---
         # This endpoint needs to be public and has a specific path.
@@ -35,10 +32,15 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/api/v1/users/register # Corrected path to match UserController
-          # No filters needed here, security is handled by Gateway's SecurityConfig
 
         # --- All other service routes are handled by discovery.locator ---
         # For example, /product-service/** will automatically route to lb://product-service
         # and /user-service/** will automatically route to lb://user-service.
         # The Gateway's SecurityConfig will protect these routes.
-    
+
+  # --- Security Configuration for this Resource Server ---
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://spring-security:8089
