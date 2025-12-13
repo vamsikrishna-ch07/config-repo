@@ -1,4 +1,3 @@
-# In config-repo/gateway-service.yml
 server:
   port: 8080
 
@@ -7,29 +6,92 @@ spring:
     name: gateway-service
   cloud:
     gateway:
-      # This automatically creates routes like /user-service/**, /product-service/**, etc.
+      # We disable discovery locator to define routes explicitly with filters.
+      # This is necessary to strip the service-id prefix from the path.
       discovery:
         locator:
-          enabled: true
+          enabled: false
       routes:
-        # --- Explicit Routes for Auth-Service Endpoints ---
-        # We keep these because spring-security is NOT registered in Eureka.
+        # --- Auth Service Routes ---
+        # Route for getting the token
         - id: auth-service-token
-          uri: lb://spring-security
+          uri: lb://spring-security # spring-security is the container name
           predicates:
             - Path=/oauth2/token
 
+        # Route for the public JWKS endpoint
         - id: auth-service-jwks
           uri: lb://spring-security
           predicates:
-            - Path=/oauth2/jwks
-        
-        # NOTE: The route for user registration is now handled automatically
-        # by the discovery locator. We have removed the explicit route.
+            - Path=/.well-known/jwks.json
+          filters:
+            # The auth server exposes this at /oauth2/jwks, so we rewrite the path.
+            - RewritePath=/\.well-known/jwks\.json, /oauth2/jwks
+
+        # --- Microservice Routes ---
+        # The StripPrefix=1 filter removes the service name from the path
+        # e.g., /user-service/api/v1/users -> /api/v1/users
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+          filters:
+            - StripPrefix=1
+            
+        - id: product-service
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/product-service/**
+          filters:
+            - StripPrefix=1
+
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/order-service/**
+          filters:
+            - StripPrefix=1
+
+        - id: inventory-service
+          uri: lb://INVENTORY-SERVICE
+          predicates:
+            - Path=/inventory-service/**
+          filters:
+            - StripPrefix=1
+
+        - id: payment-service
+          uri: lb://PAYMENT-SERVICE
+          predicates:
+            - Path=/payment-service/**
+          filters:
+            - StripPrefix=1
+
+        - id: cart-service
+          uri: lb://CART-SERVICE
+          predicates:
+            - Path=/cart-service/**
+          filters:
+            - StripPrefix=1
+
+        - id: wishlist-service
+          uri: lb://WISHLIST-SERVICE
+          predicates:
+            - Path=/wishlist-service/**
+          filters:
+            - StripPrefix=1
+            
+        - id: notification-service
+          uri: lb://NOTIFICATION-SERVICE
+          predicates:
+            - Path=/notification-service/**
+          filters:
+            - StripPrefix=1
 
   # --- Security Configuration for this Resource Server ---
   security:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://spring-security:8089/oauth2/jwks
+          # The gateway validates tokens by fetching the public key from this endpoint.
+          # We point it to the public endpoint on the gateway itself.
+          jwk-set-uri: http://localhost:8080/.well-known/jwks.json
