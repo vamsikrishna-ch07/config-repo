@@ -20,28 +20,23 @@ spring:
     loadbalancer:
       retry:
         enabled: true
-    security:
-      oauth2:
-        resourceserver:
-          jwt:
-            issuer-uri: http://spring-security:8089
-        client:
-          registration:
-            service-client:
-              provider: spring
-              client-id: service-client
-              client-secret: service-secret
-              authorization-grant-type: client_credentials
-              scope: internal.read,internal.write
-          provider:
-            spring:
-              token-uri: http://spring-security:8089/oauth2/token
-
-  security:
+  security: # Corrected nesting: directly under 'spring'
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://spring-security:8089/oauth2/jwks
+          jwk-set-uri: http://spring-security:8089/oauth2/jwks # Changed to jwk-set-uri for direct JWKS fetching
+      client:
+        registration:
+          payment-service-client: # Unique client ID for payment-service
+            provider: spring-security-provider # Descriptive provider name
+            client-id: payment-client # Unique client ID
+            client-secret: payment-secret # Unique client secret (replace with a strong secret in production)
+            authorization-grant-type: client_credentials
+            scope: internal.read,internal.write # Adjust scopes as needed
+        provider:
+          spring-security-provider: # Descriptive provider name
+            token-uri: http://spring-security:8089/oauth2/token
+            # issuer-uri: http://spring-security:8089 # Can also use issuer-uri for OIDC discovery
 
 feign:
   client:
