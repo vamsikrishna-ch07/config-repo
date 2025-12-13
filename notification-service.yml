@@ -17,7 +17,6 @@ spring:
           starttls:
             enable: true
 
-  # --- Security Configuration for this Resource Server and Client ---
   cloud:
     loadbalancer:
       retry:
@@ -39,7 +38,12 @@ spring:
             spring:
               token-uri: http://spring-security:8089/oauth2/token
 
-# Feign Client Configuration for this service (if it uses Feign)
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://spring-security:8089/oauth2/jwks
+
 feign:
   client:
     config:
