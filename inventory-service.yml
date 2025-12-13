@@ -1,23 +1,22 @@
 server:
-  port: 8083
+  port: 8088
 
 spring:
   application:
-    name: inventory-service
+    name: notification-service
 
-  datasource:
-    url: jdbc:mysql://mysql-db:3306/inventory_db?createDatabaseIfNotExist=true
-    username: root
-    password: Kr12@984872
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: vamsikrishnach2000@gmail.com
+    password: "bindagiximyqytak" # WARNING: Store securely in production
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    # Removed: properties.hibernate.dialect (not needed explicitly)
-
-  # --- Security Configuration for this Resource Server and Client ---
   cloud:
     loadbalancer:
       retry:
@@ -39,7 +38,12 @@ spring:
             spring:
               token-uri: http://spring-security:8089/oauth2/token
 
-# Feign Client Configuration for this service (if it uses Feign)
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://spring-security:8089/oauth2/jwks
+
 feign:
   client:
     config:
