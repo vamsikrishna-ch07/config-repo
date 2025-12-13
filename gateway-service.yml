@@ -7,39 +7,29 @@ spring:
     name: gateway-service
   cloud:
     gateway:
-      # Enable discovery locator to automatically create routes for Eureka-registered services
+      # This automatically creates routes like /user-service/**, /product-service/**, etc.
       discovery:
         locator:
           enabled: true
       routes:
         # --- Explicit Routes for Auth-Service Endpoints ---
-        # These are the standard OAuth2 endpoints provided by Spring Authorization Server.
-        # They must be explicitly routed and remain public (handled by SecurityConfig).
+        # We keep these because spring-security is NOT registered in Eureka.
         - id: auth-service-token
           uri: lb://spring-security
           predicates:
-            - Path=/oauth2/token # Standard OAuth2 token endpoint
+            - Path=/oauth2/token
 
         - id: auth-service-jwks
           uri: lb://spring-security
           predicates:
-            - Path=/oauth2/jwks # Corrected to Spring Authorization Server's default JWKS endpoint
-
-        # --- Explicit Route for User Registration ---
-        # This endpoint needs to be public and has a specific path.
-        - id: user-service-register
-          uri: lb://user-service
-          predicates:
-            - Path=/api/v1/users/register # Corrected path to match UserController
-
-        # --- All other service routes are handled by discovery.locator ---
-        # For example, /product-service/** will automatically route to lb://product-service
-        # and /user-service/** will automatically route to lb://user-service.
-        # The Gateway's SecurityConfig will protect these routes.
+            - Path=/oauth2/jwks
+        
+        # NOTE: The route for user registration is now handled automatically
+        # by the discovery locator. We have removed the explicit route.
 
   # --- Security Configuration for this Resource Server ---
   security:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://spring-security:8089/oauth2/jwks # Changed to jwk-set-uri for direct JWKS fetching
+          jwk-set-uri: http://spring-security:8089/oauth2/jwks
