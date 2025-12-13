@@ -24,7 +24,7 @@ spring:
         - id: auth-service-jwks
           uri: lb://spring-security
           predicates:
-            - Path=/.well-known/jwks.json # Standard JWKS endpoint for public keys
+            - Path=/oauth2/jwks # Corrected to Spring Authorization Server's default JWKS endpoint
 
         # --- Explicit Route for User Registration ---
         # This endpoint needs to be public and has a specific path.
@@ -43,4 +43,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://spring-security:8089
+          jwk-set-uri: http://spring-security:8089/oauth2/jwks # Changed to jwk-set-uri for direct JWKS fetching
