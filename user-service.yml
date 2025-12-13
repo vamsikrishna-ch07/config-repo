@@ -8,7 +8,7 @@ spring:
   datasource:
     url: jdbc:mysql://mysql-db:3306/user_db?createDatabaseIfNotExist=true
     username: root
-    password: Kr12@98484872
+    password: Kr12@984872
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
