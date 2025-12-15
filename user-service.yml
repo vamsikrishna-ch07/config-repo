@@ -1,3 +1,4 @@
+# This file is in your remote Git config-repo.
 server:
   port: 8086
 
@@ -5,44 +6,37 @@ spring:
   application:
     name: user-service
 
+  # === Database for User Storage ===
   datasource:
     url: jdbc:mysql://mysql-db:3306/user_db?createDatabaseIfNotExist=true
     username: root
     password: Kr12@984872
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  # === JPA Configuration ===
   jpa:
     hibernate:
+      # This service owns the schema, so it creates/updates it.
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
 
-  cloud:
-    loadbalancer:
-      retry:
-        enabled: true
-  security: # Corrected nesting: directly under 'spring'
+  # === OAuth2 Client Configuration (for Feign) ===
+  security:
     oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://spring-security:8089/oauth2/jwks # Changed to jwk-set-uri for direct JWKS fetching
       client:
         registration:
-          user-service-client: # Unique client ID for user-service
-            provider: spring-security-provider # Descriptive provider name
-            client-id: user-client # Unique client ID
-            client-secret: user-secret # Unique client secret (replace with a strong secret in production)
+          # A unique name for this client registration
+          user-service-client:
+            provider: spring-security-provider
+            client-id: service-client # The ID of the client it will use
+            client-secret: service-secret # The secret for that client
             authorization-grant-type: client_credentials
-            scope: internal.read,internal.write # Adjust scopes as needed
+            scope: internal.read,internal.write # The permissions it will request
         provider:
-          spring-security-provider: # Descriptive provider name
+          # A name for the provider configuration
+          spring-security-provider:
+            # The address of the token endpoint
             token-uri: http://spring-security:8089/oauth2/token
-            # issuer-uri: http://spring-security:8089 # Can also use issuer-uri for OIDC discovery
-
-# Feign Client Configuration for this service (if it uses Feign)
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic
