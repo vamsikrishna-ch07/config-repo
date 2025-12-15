@@ -1,19 +1,49 @@
+# This file is in your remote Git config-repo.
+# It contains all configuration for the spring-security service.
+
 server:
   port: 8089
 
 spring:
-  application:
-    name: spring-security
-  # Database configuration for the Auth-Service to store users, roles, etc.
+  # === Database for OAuth2 Client and Authorization Storage ===
   datasource:
     url: jdbc:mysql://mysql-db:3306/auth_db?createDatabaseIfNotExist=true
     username: root
     password: Kr12@984872
-    driver-class-name: com.mysql.cj.jdbc.Driver # Explicitly defining the driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # === JPA and SQL Initialization ===
   jpa:
     hibernate:
-      ddl-auto: update
+      # We let the schema.sql file manage the schema, so we just validate it.
+      ddl-auto: validate
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect # Recommended for MySQL 8
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  sql:
+    init:
+      # Always run the scripts to ensure the client table is populated.
+      mode: always
+      schema-locations: classpath:sql/schema.sql
+      data-locations: classpath:sql/data.sql
+
+  # === OAuth2 Client Configuration (for Feign) ===
+  # This configures the service to act as a client TO ITSELF
+  # so it can get a token to securely call the user-service.
+  security:
+    oauth2:
+      client:
+        registration:
+          # A unique name for this client registration
+          auth-service-client:
+            provider: spring-security-provider
+            client-id: service-client # The ID of the client it will use
+            client-secret: service-secret # The secret for that client
+            authorization-grant-type: client_credentials
+            scope: internal.read # The permission it will request
+        provider:
+          # A name for the provider configuration
+          spring-security-provider:
+            # The address of the token endpoint
+            token-uri: http://spring-security:8089/oauth2/token
