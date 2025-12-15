@@ -16,7 +16,6 @@ spring:
   # === JPA Configuration ===
   jpa:
     hibernate:
-      # This service owns the schema, so it creates/updates it.
       ddl-auto: update
     show-sql: true
     properties:
@@ -27,10 +26,8 @@ spring:
   security:
     oauth2:
       # --- Resource Server Config (To Protect Its Own Endpoints) ---
-      # THIS IS THE BLOCK THAT IS MISSING IN YOUR GIT REPO
       resourceserver:
         jwt:
-          # Address of the Auth Server's public key endpoint.
           jwk-set-uri: http://spring-security:8089/oauth2/jwks
 
       # --- Client Config (For Its Feign Clients) ---
