@@ -1,4 +1,4 @@
-# This file is in your remote Git config-repo.
+# This file MUST be in your remote Git config-repo.
 server:
   port: 8086
 
@@ -23,20 +23,25 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
-  # === OAuth2 Client Configuration (for Feign) ===
+  # === Security Configuration ===
   security:
     oauth2:
+      # --- Resource Server Config (To Protect Its Own Endpoints) ---
+      # THIS IS THE BLOCK THAT IS MISSING IN YOUR GIT REPO
+      resourceserver:
+        jwt:
+          # Address of the Auth Server's public key endpoint.
+          jwk-set-uri: http://spring-security:8089/oauth2/jwks
+
+      # --- Client Config (For Its Feign Clients) ---
       client:
         registration:
-          # A unique name for this client registration
           user-service-client:
             provider: spring-security-provider
-            client-id: service-client # The ID of the client it will use
-            client-secret: service-secret # The secret for that client
+            client-id: service-client
+            client-secret: service-secret
             authorization-grant-type: client_credentials
-            scope: internal.read,internal.write # The permissions it will request
+            scope: internal.read,internal.write
         provider:
-          # A name for the provider configuration
           spring-security-provider:
-            # The address of the token endpoint
             token-uri: http://spring-security:8089/oauth2/token
