@@ -1,19 +1,13 @@
-# This file is in your remote Git config-repo.
 server:
   port: 8086
-
 spring:
   application:
     name: user-service
-
-  # === Database for User Storage ===
   datasource:
     url: jdbc:mysql://mysql-db:3306/user_db?createDatabaseIfNotExist=true
     username: root
     password: Kr12@984872
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-  # === JPA Configuration ===
   jpa:
     hibernate:
       ddl-auto: update
@@ -21,18 +15,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-
-  # === Security Configuration ===
   security:
     oauth2:
-      # --- Resource Server Config (To Protect Its Own Endpoints) ---
       resourceserver:
         jwt:
-          # This is the new property to fix the 401 error
+          # This fixes the 401 Unauthorized error
           issuer-uri: http://spring-security:8089
-          jwk-set-uri: http://spring-security:8089/oauth2/jwks
-
-      # --- Client Config (For Its Feign Clients) ---
       client:
         registration:
           user-service-client:
