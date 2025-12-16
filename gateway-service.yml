@@ -1,42 +1,77 @@
 server:
-  port: 8086
+  port: 8080
 
 spring:
   application:
-    name: user-service
+    name: gateway-service
 
-  datasource:
-    url: jdbc:mysql://mysql-db:3306/user_db?createDatabaseIfNotExist=true
-    username: root
-    password: Kr12@984872
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+      routes:
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        # ===== AUTH SERVER ROUTES =====
+        - id: auth-token
+          uri: lb://spring-security
+          predicates:
+            - Path=/oauth2/token
+
+        - id: auth-jwks
+          uri: lb://spring-security
+          predicates:
+            - Path=/.well-known/jwks.json
+          filters:
+            - RewritePath=/\.well-known/jwks\.json, /oauth2/jwks
+
+        # ===== MICROSERVICES =====
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+          filters:
+            - StripPrefix=1
+
+        - id: product-service
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/product-service/**
+          filters:
+            - StripPrefix=1
+
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/order-service/**
+          filters:
+            - StripPrefix=1
+
+        - id: cart-service
+          uri: lb://CART-SERVICE
+          predicates:
+            - Path=/cart-service/**
+          filters:
+            - StripPrefix=1
 
   security:
     oauth2:
 
-      # 🔐 Validate user JWT
+      # 🔐 RESOURCE SERVER (token validation)
       resourceserver:
         jwt:
           issuer-uri: http://spring-security:8089
 
-      # 🔁 Internal service calls
+      # 🔑 OAUTH CLIENT (browser login callback)
       client:
-        registration:
-          user-service-client:
-            provider: spring-security-provider
-            client-id: service-client
-            client-secret: service-secret
-            authorization-grant-type: client_credentials
-            scope: internal.read,internal.write
-
         provider:
-          spring-security-provider:
-            token-uri: http://spring-security:8089/oauth2/token
+          auth-server:
+            issuer-uri: http://spring-security:8089
+
+        registration:
+          gateway:
+            client-id: client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid,profile
