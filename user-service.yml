@@ -1,13 +1,16 @@
 server:
   port: 8086
+
 spring:
   application:
     name: user-service
+
   datasource:
     url: jdbc:mysql://mysql-db:3306/user_db?createDatabaseIfNotExist=true
     username: root
     password: Kr12@984872
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,12 +18,16 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+
   security:
     oauth2:
+
+      # 🔐 Validate user JWT
       resourceserver:
         jwt:
-          # This fixes the 401 Unauthorized error
           issuer-uri: http://spring-security:8089
+
+      # 🔁 Internal service calls
       client:
         registration:
           user-service-client:
@@ -29,6 +36,7 @@ spring:
             client-secret: service-secret
             authorization-grant-type: client_credentials
             scope: internal.read,internal.write
+
         provider:
           spring-security-provider:
             token-uri: http://spring-security:8089/oauth2/token
