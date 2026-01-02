@@ -27,8 +27,8 @@ spring:
         registration:
           order-service-client: # Unique client ID for order-service
             provider: spring-security-provider # Descriptive provider name
-            client-id: order-client # Unique client ID
-            client-secret: order-secret # Unique client secret (replace with a strong secret in production)
+            client-id: service-client # Unique client ID
+            client-secret: service-secret # Unique client secret (replace with a strong secret in production)
             authorization-grant-type: client_credentials
             scope: internal.read,internal.write # Adjust scopes as needed
         provider:
