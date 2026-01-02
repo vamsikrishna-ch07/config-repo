@@ -21,11 +21,14 @@ spring:
     loadbalancer:
       retry:
         enabled: true
-  security: # Corrected nesting: directly under 'spring'
+  spring:
+  security:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://spring-security:8089/oauth2/jwks # Changed to jwk-set-uri for direct JWKS fetching
+          # REPLACE jwk-set-uri with issuer-uri
+          issuer-uri: http://spring-security:8089
+         # jwk-set-uri: http://spring-security:8089/oauth2/jwks # Changed to jwk-set-uri for direct JWKS fetching
       client:
         registration:
           inventory-service-client: # Unique client ID for inventory-service
