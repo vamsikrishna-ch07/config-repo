@@ -29,8 +29,8 @@ spring:
         registration:
           cart-service-client: # Unique client ID for cart-service
             provider: spring-security-provider # Descriptive provider name
-            client-id: cart-client # Unique client ID
-            client-secret: cart-secret # Unique client secret (replace with a strong secret in production)
+            client-id: service-client # Unique client ID
+            client-secret: service-secret # Unique client secret (replace with a strong secret in production)
             authorization-grant-type: client_credentials
             scope: internal.read,internal.write # Adjust scopes as needed
         provider:
