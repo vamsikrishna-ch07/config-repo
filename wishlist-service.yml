@@ -1,4 +1,3 @@
-# In config-repo/wishlist-service.yml
 server:
   port: 8087
 
@@ -12,37 +11,32 @@ spring:
     password: Kr12@984872
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  jpa: # Corrected indentation
+  jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-    # Removed: properties.hibernate.dialect
 
-  cloud: # Moved cloud properties here, as they are not security-specific
+  cloud:
     loadbalancer:
       retry:
         enabled: true
-  security: # Corrected nesting: directly under 'spring'
+  security:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://spring-security:8089/oauth2/jwks # Changed to jwk-set-uri for direct JWKS fetching
+          jwk-set-uri: http://spring-security:8089/oauth2/jwks
       client:
         registration:
-          # Client config for service-to-service communication
-          wishlist-service-client: # Unique client ID for wishlist-service
-            provider: spring-security-provider # Descriptive provider name
-            client-id: wishlist-client # Unique client ID
-            client-secret: wishlist-secret # Unique client secret (replace with a strong secret in production)
+          service-client: # <-- Standardized name
+            provider: spring-security-provider
+            client-id: service-client       # <-- Standardized ID
+            client-secret: service-secret   # <-- Standardized secret
             authorization-grant-type: client_credentials
-            scope: internal.read,internal.write # Adjust scopes as needed
+            scope: internal.read,internal.write
         provider:
-          spring-security-provider: # Descriptive provider name
-            # Token endpoint for client_credentials flow
+          spring-security-provider:
             token-uri: http://spring-security:8089/oauth2/token
-            # issuer-uri: http://spring-security:8089 # Can also use issuer-uri for OIDC discovery
 
-# Feign Client Configuration for this service
 feign:
   client:
     config:
