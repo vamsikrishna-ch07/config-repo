@@ -1,44 +1,42 @@
 server:
-  port: 8083 # Assuming default port for inventory-service
+  port: 8083
 
 spring:
   application:
-    name: inventory-service # Service name for Eureka registration and config server
+    name: inventory-service
 
   datasource:
     url: jdbc:mysql://mysql-db:3306/inventory_db?createDatabaseIfNotExist=true
     username: root
-    password: Kr12@984872 # Replace with your actual password
+    password: Kr12@984872
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-    open-in-view: false # Good practice to set to false
+    open-in-view: false
 
   cloud:
     loadbalancer:
       retry:
         enabled: true
-  spring:
   security:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://spring-security:8089/oauth2/jwks # Changed to jwk-set-uri for direct JWKS fetching
+          jwk-set-uri: http://spring-security:8089/oauth2/jwks
       client:
         registration:
-          inventory-service-client: # Unique client ID for inventory-service
-            provider: spring-security-provider # Descriptive provider name
-            client-id: inventory-client # Unique client ID
-            client-secret: inventory-secret # Unique client secret (replace with a strong secret in production)
+          service-client: # <-- Standardized name
+            provider: spring-security-provider
+            client-id: service-client       # <-- Standardized ID
+            client-secret: service-secret   # <-- Standardized secret
             authorization-grant-type: client_credentials
-            scope: internal.read,internal.write # Adjust scopes as needed
+            scope: internal.read,internal.write
         provider:
-          spring-security-provider: # Descriptive provider name
+          spring-security-provider:
             token-uri: http://spring-security:8089/oauth2/token
-            # issuer-uri: http://spring-security:8089 # Can also use issuer-uri for OIDC discovery
 
 feign:
   client:
