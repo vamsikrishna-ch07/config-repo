@@ -15,33 +15,29 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-    # Removed: properties.hibernate.dialect (not needed explicitly)
 
-  # --- Security Configuration for this Resource Server and Client ---
-  security: # Corrected nesting: directly under 'spring'
+  security:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://spring-security:8089/oauth2/jwks # Changed to jwk-set-uri for direct JWKS fetching
+          jwk-set-uri: http://spring-security:8089/oauth2/jwks
       client:
         registration:
-          order-service-client: # Unique client ID for order-service
-            provider: spring-security-provider # Descriptive provider name
-            client-id: service-client # Unique client ID
-            client-secret: service-secret # Unique client secret (replace with a strong secret in production)
+          service-client: # <-- Standardized name
+            provider: spring-security-provider
+            client-id: service-client
+            client-secret: service-secret
             authorization-grant-type: client_credentials
-            scope: internal.read,internal.write # Adjust scopes as needed
+            scope: internal.read,internal.write
         provider:
-          spring-security-provider: # Descriptive provider name
+          spring-security-provider:
             token-uri: http://spring-security:8089/oauth2/token
-            # issuer-uri: http://spring-security:8089 # Can also use issuer-uri for OIDC discovery
 
-  cloud: # Moved cloud properties here, as they are not security-specific
+  cloud:
     loadbalancer:
       retry:
         enabled: true
 
-# Feign Client Configuration for this service (if it uses Feign)
 feign:
   client:
     config:
