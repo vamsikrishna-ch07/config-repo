@@ -21,22 +21,17 @@ spring:
 
   security:
     oauth2:
-
-      # 🔐 Validate user JWT
       resourceserver:
         jwt:
           issuer-uri: http://spring-security:8089
-
-      # 🔁 Internal service calls
       client:
         registration:
-          user-service-client:
+          service-client: # <-- Standardized name
             provider: spring-security-provider
             client-id: service-client
             client-secret: service-secret
             authorization-grant-type: client_credentials
             scope: internal.read,internal.write
-
         provider:
           spring-security-provider:
             token-uri: http://spring-security:8089/oauth2/token
