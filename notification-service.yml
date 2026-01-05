@@ -9,7 +9,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: vamsikrishnach2000@gmail.com
-    password: "bindagiximyqytak" # WARNING: Store securely in production
+    password: "bindagiximyqytak"
     properties:
       mail:
         smtp:
@@ -21,23 +21,22 @@ spring:
     loadbalancer:
       retry:
         enabled: true
-  security: # Corrected nesting: directly under 'spring'
+  security:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://spring-security:8089/oauth2/jwks # Changed to jwk-set-uri for direct JWKS fetching
+          jwk-set-uri: http://spring-security:8089/oauth2/jwks
       client:
         registration:
-          notification-service-client: # Unique client ID for notification-service
-            provider: spring-security-provider # Descriptive provider name
-            client-id: notification-client # Unique client ID
-            client-secret: notification-secret # Unique client secret (replace with a strong secret in production)
+          service-client: # <-- Standardized name
+            provider: spring-security-provider
+            client-id: service-client       # <-- Standardized ID
+            client-secret: service-secret   # <-- Standardized secret
             authorization-grant-type: client_credentials
-            scope: internal.read,internal.write # Adjust scopes as needed
+            scope: internal.read,internal.write
         provider:
-          spring-security-provider: # Descriptive provider name
+          spring-security-provider:
             token-uri: http://spring-security:8089/oauth2/token
-            # issuer-uri: http://spring-security:8089 # Can also use issuer-uri for OIDC discovery
 
 feign:
   client:
