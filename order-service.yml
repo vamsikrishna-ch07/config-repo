@@ -16,23 +16,6 @@ spring:
       ddl-auto: update
     show-sql: true
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://spring-security:8089/oauth2/jwks
-      client:
-        registration:
-          service-client: # <-- Standardized name
-            provider: spring-security-provider
-            client-id: service-client
-            client-secret: service-secret
-            authorization-grant-type: client_credentials
-            scope: internal.read,internal.write
-        provider:
-          spring-security-provider:
-            token-uri: http://spring-security:8089/oauth2/token
-
   cloud:
     loadbalancer:
       retry:
@@ -45,3 +28,7 @@ feign:
         connectTimeout: 5000
         readTimeout: 5000
         loggerLevel: basic
+
+# JWT Configuration for Token Validation
+jwt:
+  secret: your-super-secret-key-that-is-at-least-256-bits-long-for-hs256
