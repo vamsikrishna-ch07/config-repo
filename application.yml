@@ -2,7 +2,7 @@
 # COMMON PROPERTIES FOR ALL MICROSERVICES (TRULY UNIVERSAL)
 # ===================================================================
 
-# Management Endpoints for Health Checks and Monitoring (most services need this)
+# Management Endpoints for Health Checks and Monitoring
 management:
   endpoints:
     web:
@@ -12,15 +12,19 @@ management:
     health:
       show-details: always
 
-# Spring Configurations (only truly universal ones)
+# Spring Configurations
 spring:
   application:
-    name: application # Default application name, can be overridden by service-specific configs
+    name: application
 
-# Eureka Client Configuration (most services need to be clients)
+# Eureka Client Configuration
 eureka:
   client:
     service-url:
       defaultZone: http://service-registry:8761/eureka
   instance:
     prefer-ip-address: true
+
+# Global JWT Secret (Optional: if you want to define it once here instead of in every file)
+jwt:
+  secret: your-super-secret-key-that-is-at-least-256-bits-long-for-hs256
