@@ -25,8 +25,7 @@ eureka:
   instance:
     prefer-ip-address: true
 
-# Global JWT Secret (Optional: if you want to define it once here instead of in every file)
-jwt:  <-- NO SPACES AT THE START
+# Global JWT Secret
+jwt:
   secret: your-super-secret-key-that-is-at-least-256-bits-long-for-hs256
   expiration: 86400000
-    
