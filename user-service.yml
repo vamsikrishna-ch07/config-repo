@@ -19,19 +19,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://spring-security:8089
-      client:
-        registration:
-          service-client: # <-- Standardized name
-            provider: spring-security-provider
-            client-id: service-client
-            client-secret: service-secret
-            authorization-grant-type: client_credentials
-            scope: internal.read,internal.write
-        provider:
-          spring-security-provider:
-            token-uri: http://spring-security:8089/oauth2/token
+# JWT Configuration for Token Generation
+jwt:
+  secret: your-super-secret-key-that-is-at-least-256-bits-long-for-hs256
+  expiration: 86400000 # 24 hours
