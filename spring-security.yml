@@ -1,36 +1,36 @@
-server:
-  port: 8089
+# server:
+#   port: 8089
 
-spring:
-  application:
-    name: spring-security
+# spring:
+#   application:
+#     name: spring-security
 
-  datasource:
-    url: jdbc:mysql://mysql-db:3306/auth_db?createDatabaseIfNotExist=true
-    username: root
-    password: Kr12@984872
-    driver-class-name: com.mysql.cj.jdbc.Driver
+#   datasource:
+#     url: jdbc:mysql://mysql-db:3306/auth_db?createDatabaseIfNotExist=true
+#     username: root
+#     password: Kr12@984872
+#     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+#   jpa:
+#     hibernate:
+#       ddl-auto: update
+#     show-sql: true
 
-  security:
-    oauth2:
-      authorization-server:
-        # 🔴 MUST be explicit and consistent everywhere
-        issuer: http://spring-security:8089
+#   security:
+#     oauth2:
+#       authorization-server:
+#         # 🔴 MUST be explicit and consistent everywhere
+#         issuer: http://spring-security:8089
 
-      # Used ONLY for internal service-to-service calls
-      client:
-        registration:
-          auth-service-client:
-            provider: spring-security-provider
-            client-id: service-client
-            client-secret: service-secret
-            authorization-grant-type: client_credentials
-            scope: internal.read
-        provider:
-          spring-security-provider:
-            token-uri: http://spring-security:8089/oauth2/token
+#       # Used ONLY for internal service-to-service calls
+#       client:
+#         registration:
+#           auth-service-client:
+#             provider: spring-security-provider
+#             client-id: service-client
+#             client-secret: service-secret
+#             authorization-grant-type: client_credentials
+#             scope: internal.read
+#         provider:
+#           spring-security-provider:
+#             token-uri: http://spring-security:8089/oauth2/token
