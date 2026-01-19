@@ -11,20 +11,6 @@ spring:
         locator:
           enabled: false
       routes:
-
-        # ===== AUTH SERVER ROUTES =====
-        - id: auth-token
-          uri: lb://spring-security
-          predicates:
-            - Path=/oauth2/token
-
-        - id: auth-jwks
-          uri: lb://spring-security
-          predicates:
-            - Path=/.well-known/jwks.json
-          filters:
-            - RewritePath=/\.well-known/jwks\.json, /oauth2/jwks
-
         # ===== MICROSERVICES =====
         - id: user-service
           uri: lb://USER-SERVICE
@@ -61,7 +47,6 @@ spring:
           filters:
             - StripPrefix=1
 
-        # ===== NEWLY ADDED ROUTES =====
         - id: payment-service
           uri: lb://PAYMENT-SERVICE
           predicates:
@@ -82,20 +67,3 @@ spring:
             - Path=/notification-service/**
           filters:
             - StripPrefix=1
-
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://spring-security:8089
-      client:
-        provider:
-          auth-server:
-            issuer-uri: http://spring-security:8089
-        registration:
-          gateway:
-            client-id: client
-            client-secret: secret
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-            scope: openid,profile
