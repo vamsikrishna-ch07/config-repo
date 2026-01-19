@@ -28,7 +28,4 @@ feign:
         connectTimeout: 5000
         readTimeout: 5000
         loggerLevel: basic
-
-# JWT Configuration for Token Validation
-jwt:
-  secret: your-super-secret-key-that-is-at-least-256-bits-long-for-hs256
+your-super-secret-key-that-is-at-least-256-bits-long-for-hs256
